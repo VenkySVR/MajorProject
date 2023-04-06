@@ -37,3 +37,15 @@ class StatsSerializer(ModelSerializer):
     class Meta:
         model = Stats
         fields = ('problem_id','no_of_solutions','no_of_success','no_of_failure','no_of_inprogress')
+
+
+# class StatsSerializer(ModelSerializer):
+#     class Meta:
+#         model = Stats
+#         fields = ('problem_id','no_of_solutions','no_of_success','no_of_failure','no_of_inprogress')
+
+
+# class StatsSerializer(ModelSerializer):
+#     class Meta:
+#         model = Stats
+#         fields = ('problem_id','no_of_solutions','no_of_success','no_of_failure','no_of_inprogress')
