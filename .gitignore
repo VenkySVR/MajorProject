@@ -1,9 +1,0 @@
-# Ignore dependencies and packages
-node_modules/
-__pycache__/
-
-# Development files
-*.log
-db.sqlite3
-.vscode/
-.env
