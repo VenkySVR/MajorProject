@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlineJudge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="nav">
+        <ul class='left'>
+            <li><i class="fa fa-square" style="font-size:40px;color:rgb(255, 255, 255)">OnlineJudge</i></li>
+            <li><a href='/'>
+                    <h3>Home</h3>
+                </a></li>
+
+        </ul>
+        <ul class="right">
+            <li>
+                <h3>
+                    <%= username%>
+                    <li><a href='/logout'>
+                        <h3>Logout</h3>
+                    </a></li>
+                </h3>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+    <div class="Question-view">
+        <div class="Question-title">
+            <ul>
+                <li>
+                    <h1><%= questions.title%></h1><br>
+                </li>
+                <li>
+                    <a href="/submissions/<%= questions.id %>" class='button button1'>Submissions</a>
+                </li>
+            </ul>
+        </div>
+        <div class="Question-content">
+            <p style="white-space: pre-line"><%= questions.description %></p>
+        </div>
+        <a href="/ide/<%= questions.id %>">
+            <button class="button button1 submit">Submit</button>
+        </a>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
+
+
+

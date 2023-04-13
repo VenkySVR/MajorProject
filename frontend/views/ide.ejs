@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlineJudge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="nav">
+
+        <ul class='left'>
+            <li><i class="fa fa-square" style="font-size:40px;color:rgb(255, 255, 255)">OnlineJudge</i></li>
+            <li><a href='/'>
+                    <h3>Home</h3>
+                </a></li>
+            <li><a href='/problem/<%= questions.id %>'>
+                    <h3>Problem Page</h3>
+                </a></li>
+        </ul>
+
+        <ul class="right">
+            <li>
+                <h3>
+                    <%= username %>
+            <li><a href='/logout'>
+                    <h3>Logout</h3>
+                </a></li>
+            </h3>
+            </li>
+        </ul>
+
+
+
+    </div>
+
+    <input type="hidden"  name="problemId" id="problemId" value="<%= questions.id %>">
+    <input type="hidden"  name="userId" id="userId" value="<%= userId %>">
+    <input type="hidden" name="username" id="username" value="<%= username %>">
+
+
+
+
+
+    <div class="container">
+        <div class="header">IDE for Online Judge</div>
+        <div class="language-option">
+            <label for="languages">Choose a Language :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select id="languages" class="languages" onchange="changeLanguage()">
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+            </select>
+        </div>
+
+        <div class="editor" id="editor"></div>
+
+        <div class="button-container">
+            <button class="btn" onclick="RunCode()"> Run Code</button>
+            <button class="btn" onclick="SubmitCode()"> Submit</button>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div class="input" id="input">
+            <h1> Input</h1>
+            <textarea rows="10" cols="150" name="comment" form="usrform" id='msg'></textarea>
+        </div>
+        <h1> Out Put</h1>
+        <div class="output">
+            <textarea rows="10" cols="150" name="comment" form="usrform" id='outmsg' readonly></textarea>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/lib/ace.js"></script>
+    <script src="/js/lib/theme-twilight.js"></script>
+
+
+</body>
+
+</html>
+
+
+
+<script>
+
+    let editor;
+    // const element = document.getElementById("editor");
+    // console.log(element)
+    document.getElementById('editor').style.fontSize = '16px';
+
+    window.onload = function () {
+        editor = ace.edit("editor");
+        editor.setTheme("ace/theme/twilight");
+        editor.session.setMode("ace/mode/python");
+        editor.insert("print('hello world')");
+    }
+
+    console.log("Hello World!");
+
+
+    function changeLanguage() {
+
+        let language = $("#languages").val();
+
+        if (language == 'c' || language == 'cpp') editor.session.setMode("ace/mode/c_cpp");
+        else if (language == 'python') editor.session.setMode("ace/mode/python");
+        else if (language == 'javascipt') editor.session.setMode("ace/mode/javascript");
+    }
+
+
+    function RunCode() {
+        let r = document.getElementById("outmsg");
+
+        $.ajax({
+            url: "/run_code",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "language": $("#languages").val(),
+                "code": editor.getSession().getValue(),
+                "problem_id": null,
+                "user_id": null,
+                "input": $("textarea#msg").val()
+            }),
+            success: function (response) {
+                let r = document.getElementById("outmsg");
+                r.innerHTML = response;
+            }
+
+
+        })
+    }
+    function SubmitCode() {
+        alert("Are you sure you want to submit the code?");
+        let r = document.getElementById("outmsg");
+        let userId = document.getElementById("userId").value;
+        let problemId = document.getElementById("problemId").value;
+        $.ajax({
+            url: "/submit_code",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "language": $("#languages").val(),
+                "code": editor.getSession().getValue(),
+                "problem_id": problemId,
+                "user_id": userId,
+                "input": null,
+            }),
+
+
+            success: function (response) {
+                let r = document.getElementById("outmsg");
+                r.innerHTML = response;
+            }
+
+
+        })
+    }
+</script>
