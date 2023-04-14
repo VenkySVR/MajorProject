@@ -32,11 +32,9 @@ pipeline {
     stage('Kubernetes') {
       agent any
       steps {
-        sshagent(['Master']) {
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102'
-        sh 'scp deploy.yaml ubuntu@192.168.55.102:/home/ubuntu'
-      
-      }
+        sh "sshpass -p ' ' scp -o StrictHostKeyChecking=no deploy.yaml ubuntu@192.168.55.102:/home/ubuntu"
+        sh "sshpass -p ' ' ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102 'ls'"
+
       }
     }
 
