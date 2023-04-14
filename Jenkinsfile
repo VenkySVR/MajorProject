@@ -24,7 +24,7 @@ pipeline {
             sh 'docker login -u ${docker_username} -p ${docker_password}'
             sh 'docker push venkysvr/admin'
             sh 'docker push venkysvr/client'
-            sh 'docker push venkysvr/web'
+            sh 'docker push venkysvr/compiler'
         }
       }
     }
