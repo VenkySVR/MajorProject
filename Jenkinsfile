@@ -9,36 +9,22 @@ pipeline {
       }
     }
 
-    stage('Ansible') {
-      agent any
-      steps {
-        sshagent(['ansible']) {
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.105'
-        sh 'scp -r /var/lib/jenkins/workspace/DevOps_main/* ubuntu@192.168.55.105:/home/ubuntu'
-      }
-      }
-
-    }
-
     stage('Docker Build') {
       agent any
       steps {
-        sshagent(['ansible']) {
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.105 docker build app/. -t venkysvr/app'
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.105 docker build web/. -t venkysvr/web'
-      }
+        sh 'docker build api/. -t venkysvr/admin'
+        sh 'docker build frontend/. -t venkysvr/client'
+        sh 'docker build subprocess/. -t venkysvr/compiler'
       }
     }
-     stage('Docker push') {
+     stage('Docker Hub') {
       agent any
       steps {
-        sshagent(['ansible']) {
           withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
-            sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.105 docker login -u ${docker_username} -p ${docker_password}'
-            sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.105 docker push venkysvr/app'
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.105 docker push venkysvr/web'
-      
-        }
+            sh 'docker login -u ${docker_username} -p ${docker_password}'
+            sh 'docker push venkysvr/admin'
+            sh 'docker push venkysvr/client'
+            sh 'docker push venkysvr/web'
         }
       }
     }
