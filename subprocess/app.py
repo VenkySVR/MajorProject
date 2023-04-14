@@ -1,5 +1,5 @@
 # Import the required modules
-import mysql.connector
+# import mysql.connector
 from flask import Flask, jsonify, request
 import subprocess
 import time
@@ -7,17 +7,17 @@ import time
 app = Flask(__name__)
 
 # Connect to the MySQL database
-db = mysql.connector.connect(
-    host='database.c5zjm2epqrko.ap-south-1.rds.amazonaws.com',
-    user= 'admin',
-    password= 'Admin123',
-    database= 'onlinejudge'
-)
+# db = mysql.connector.connect(
+#     host='database.c5zjm2epqrko.ap-south-1.rds.amazonaws.com',
+#     user= 'admin',
+#     password= 'Admin123',
+#     database= 'onlinejudge'
+# )
 
 
 
-# Create a cursor object
-cursor = db.cursor()
+# # Create a cursor object
+# cursor = db.cursor()
 
 def run_python(code,input_):
     result = subprocess.run(['python', '-c', code], input=input_, capture_output=True)
@@ -89,46 +89,46 @@ def run_code(code, language,input_):
 def Run(code,language,input_):
     return run_code(code,language,input_)
 
-def Submit(code,language,problem_id,user_id):
-    cursor.execute("SELECT * FROM app_problem WHERE id = %s", (problem_id,))
-    problem = cursor.fetchall()
-    cursor.execute("SELECT * FROM app_customuser WHERE id = %s", (user_id,))
-    user = cursor.fetchall()
-    cursor.execute("SELECT * FROM app_testcases WHERE id = %s", (problem_id,))
-    test_cases = cursor.fetchall()
+# def Submit(code,language,problem_id,user_id):
+#     cursor.execute("SELECT * FROM app_problem WHERE id = %s", (problem_id,))
+#     problem = cursor.fetchall()
+#     cursor.execute("SELECT * FROM app_customuser WHERE id = %s", (user_id,))
+#     user = cursor.fetchall()
+#     cursor.execute("SELECT * FROM app_testcases WHERE id = %s", (problem_id,))
+#     test_cases = cursor.fetchall()
 
-    length_test_cases = len(test_cases)
+#     length_test_cases = len(test_cases)
     
-    test_cases = []
-    for input_ in test_cases:
-        Result = Run(code, language,input_.input)
-        # print(input_.output.encode('utf-8'))
-        input_.output = input_.output.encode('utf-8')
-        # print(Result['result'][:].encode('utf-8'))
-        result_ = Result['result']
-        Result['result'] = Result['result'][:].encode('utf-8')
-        if 'Error' in result_:
-            out = 'Runtime Error in test case ' + str(len(test_cases) - length_test_cases) + '\n' + result_
-        elif Result['result'] == input_.output and Result['run_time'] <= problem.time_limit:
-            length_test_cases -= 1
-        elif Result['result'] == input_.output and Result['run_time'] > problem.time_limit:
-            out = 'Time Limit Exceeded on test case ' + str(len(test_cases) - length_test_cases)
-        else:
-            out = 'Wrong Answer on test case ' + str(len(test_cases) - length_test_cases) 
-            break
-    if length_test_cases == 0:
-        out = 'Accepted'
-    #     solved = user.solved +1
-    #     score = user.score + problem.score
-    #     user.solved = solved
-    #     user.score = score
-    #     user.save()
+#     test_cases = []
+#     for input_ in test_cases:
+#         Result = Run(code, language,input_.input)
+#         # print(input_.output.encode('utf-8'))
+#         input_.output = input_.output.encode('utf-8')
+#         # print(Result['result'][:].encode('utf-8'))
+#         result_ = Result['result']
+#         Result['result'] = Result['result'][:].encode('utf-8')
+#         if 'Error' in result_:
+#             out = 'Runtime Error in test case ' + str(len(test_cases) - length_test_cases) + '\n' + result_
+#         elif Result['result'] == input_.output and Result['run_time'] <= problem.time_limit:
+#             length_test_cases -= 1
+#         elif Result['result'] == input_.output and Result['run_time'] > problem.time_limit:
+#             out = 'Time Limit Exceeded on test case ' + str(len(test_cases) - length_test_cases)
+#         else:
+#             out = 'Wrong Answer on test case ' + str(len(test_cases) - length_test_cases) 
+#             break
+#     if length_test_cases == 0:
+#         out = 'Accepted'
+#     #     solved = user.solved +1
+#     #     score = user.score + problem.score
+#     #     user.solved = solved
+#     #     user.score = score
+#     #     user.save()
 
 
-    # submission = Submissions.objects.create(user=user,problem=problem,language=language,result=out,previous_submission=code)
-    # submission.save()
+#     # submission = Submissions.objects.create(user=user,problem=problem,language=language,result=out,previous_submission=code)
+#     # submission.save()
 
-    return out
+#     return out
 
 
 
