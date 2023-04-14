@@ -9,6 +9,8 @@ const querystring = require('querystring');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const compiler_url = "http://192.168.55.107:5000";
+const admin_url = "http://192.168.55.107:8000";
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,7 +51,7 @@ app.get('/', async (req, res) => {
         req.session.username = username;
 
 
-        const response = await axios.get('http://127.0.0.1:8000/problems?format=json');
+        const response = await axios.get(admin_url+'/problems?format=json');
         const questions = response.data;
         res.render('home', { username: username, questions: questions })
 
@@ -139,7 +141,7 @@ app.listen(port, () => {
 
 // app.get('/', async (req, res) => {
 //     try {
-//         const response = await axios.get('http://127.0.0.1:8000/problems?format=json'); // fetch the JSON data from the URL
+//         const response = await axios.get(admin_url+'/problems?format=json'); // fetch the JSON data from the URL
 //         const questions = response.data; // extract the JSON data from the response
 //         // console.log(questions)
 //         res.render('home', {questions: questions});
@@ -156,7 +158,7 @@ app.get('/ide/:id', async (req, res) => {
     }
 
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/problems/${req.params.id}?format=json`); // fetch the JSON data from the URL
+        const response = await axios.get(admin_url+`/problems/${req.params.id}?format=json`); // fetch the JSON data from the URL
         const questions = response.data; // extract the JSON data from the response
         // console.log(questions)
         res.render('ide', { username: req.session.username, userId: req.session.userId, questions: questions });
@@ -173,7 +175,7 @@ app.get('/problem/:id', async (req, res) => {
     }
 
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/problems/${req.params.id}?format=json`); // fetch the JSON data from the URL
+        const response = await axios.get(admin_url+`/problems/${req.params.id}?format=json`); // fetch the JSON data from the URL
         const questions = response.data; // extract the JSON data from the response
         // console.log(questions)
         res.render('problem', { username: req.session.username, questions: questions });
@@ -191,7 +193,7 @@ app.get('/submissions/:id', async (req, res) => {
     }
 
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/submissions/problem/${req.params.id}?format=json`); // fetch the JSON data from the URL
+        const response = await axios.get(admin_url+`/submissions/problem/${req.params.id}?format=json`); // fetch the JSON data from the URL
         const submissions = response.data; // extract the JSON data from the response
         const [arr] = await pool.query('SELECT id, username FROM app_customuser ;');
         // console.log(arr)
@@ -212,7 +214,7 @@ app.get('/submissions/:id', async (req, res) => {
 app.post('/run_code', async (req, res) => {
     const data = req.body;
     try {
-        const response = await axios.post(`http://127.0.0.1:5000/run_code`, data); // fetch the JSON data from the URL
+        const response = await axios.post(compiler_url+`/run_code`, data); // fetch the JSON data from the URL
         console.log(response.data)
         output = "Run Time = " + response.data.run_time  + "\n" + response.data.result
         return res.send(output)
@@ -226,7 +228,7 @@ app.post('/run_code', async (req, res) => {
 app.post('/submit_code', async (req, res) => {
     const data = req.body;
     try {
-        const response = await axios.post(`http://127.0.0.1:5000/submit_code`, data); // fetch the JSON data from the URL
+        const response = await axios.post(compiler_url+`/submit_code`, data); // fetch the JSON data from the URL
         output = "Run Time = " + response.data.run_time  + "\n"+ response.data.result
         return res.send(output)
     } catch (error) {
@@ -260,7 +262,7 @@ app.post('/submit_code', async (req, res) => {
 //     }
 
 //     try {
-//         const response = await axios.get('http://127.0.0.1:8000/problems?format=json'); // fetch the JSON data from the URL
+//         const response = await axios.get(admin_url+'/problems?format=json'); // fetch the JSON data from the URL
 //         const questions = response.data; // extract the JSON data from the response
 //         // console.log(questions)
 //         res.render('home', { questions: questions });
@@ -276,7 +278,7 @@ app.post('/submit_code', async (req, res) => {
 
 //     try {
 //         // Check if the username already exists
-//         const response = await axios.post('http://127.0.0.1:8000/register', postData); // fetch the JSON data from the URL
+//         const response = await axios.post(admin_url+'/register', postData); // fetch the JSON data from the URL
 //         const data = response.data; // extract the JSON data from the response
 //         console.log(req.body)
 //         console.log(data)
@@ -293,7 +295,7 @@ app.post('/submit_code', async (req, res) => {
 //     const { username, password } = req.body;
 //     const postData = querystring.stringify(req.body);
 //     try {
-//         const response = await axios.post('http://127.0.0.1:8000/login', postData); // fetch the JSON data from the URL
+//         const response = await axios.post(admin_url+'/login', postData); // fetch the JSON data from the URL
 //         const data = response.data; // extract the JSON data from the response
 //         console.log(req.body)
 //         console.log(data)
