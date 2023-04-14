@@ -32,9 +32,9 @@ pipeline {
     stage('Kubernetes') {
       agent any
       steps {
-        sshagent(['ansible']) {
-        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.107'
-        sh 'scp -r /var/lib/jenkins/workspace/DevOps_main/kubernetes/* ubuntu@192.168.55.107:/home/ubuntu'
+        sshagent(['Master']) {
+        sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102'
+        sh 'scp deploy.yaml ubuntu@192.168.55.102:/home/ubuntu'
       
       }
       }
