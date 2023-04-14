@@ -20,7 +20,7 @@ app = Flask(__name__)
 # cursor = db.cursor()
 
 def run_python(code,input_):
-    result = subprocess.run(['python', '-c', code], input=input_, capture_output=True)
+    result = subprocess.run(['python3', '-c', code], input=input_, capture_output=True)
     output = result.stdout.decode('utf-8')
     error = result.stderr.decode('utf-8')
 
