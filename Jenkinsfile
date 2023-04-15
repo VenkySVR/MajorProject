@@ -33,7 +33,7 @@ pipeline {
       agent any
       steps {
         sh "sshpass -p ' ' scp -o StrictHostKeyChecking=no deploy.yaml ubuntu@192.168.55.102:/home/ubuntu"
-        sh "sshpass -p ' ' ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102 'ls'"
+        sh "sshpass -p ' ' ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102 'microk8s.kubectl apply -f deploy.yaml'"
 
       }
     }
