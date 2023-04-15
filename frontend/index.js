@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const compiler_url = "http://compiler-service:5000";
-const admin_url = "http://192.168.55.102:3100";
+const admin_url = "http://192.168.55.102:31000";
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
