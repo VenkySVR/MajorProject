@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 def run_python(code,input_):
-    result = subprocess.run(['python', '-c', code], input=input_,encoding="utf-8", capture_output=True)
+    result = subprocess.run(['python3', '-c', code], input=input_,encoding="utf-8", capture_output=True)
     output = result.stdout
     error = result.stderr
 
