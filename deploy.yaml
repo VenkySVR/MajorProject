@@ -15,20 +15,9 @@ spec:
       containers:
       - name: admin
         image: venkysvr/admin:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
-        readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-        imagePullPolicy: IfNotPresent
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 1
-          maxSurge: 1
 ---
 apiVersion: v1
 kind: Service
@@ -61,20 +50,9 @@ spec:
       containers:
       - name: client
         image: venkysvr/client:latest
-        ports:
-        - containerPort: 3000
-        readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
         imagePullPolicy: IfNotPresent
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 1
-          maxSurge: 1        
+        ports:
+        - containerPort: 3000     
 ---
 apiVersion: v1
 kind: Service
@@ -107,20 +85,9 @@ spec:
       containers:
       - name: compiler
         image: venkysvr/compiler:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
-        readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-        imagePullPolicy: IfNotPresent
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxUnavailable: 1
-          maxSurge: 1
 ---
 apiVersion: v1
 kind: Service
