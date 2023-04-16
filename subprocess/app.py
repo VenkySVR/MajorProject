@@ -113,9 +113,7 @@ def submit_code():
 @app.route("/run_code", methods=["POST"])
 def execute_code():
     data = request.json
-    # print(data)
     output = Run(data['code'], data['language'],data['input'])
-    # print(output)
     return output
 
 

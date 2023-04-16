@@ -139,17 +139,7 @@ app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 
-// app.get('/', async (req, res) => {
-//     try {
-//         const response = await axios.get(admin_url+'/problems?format=json'); // fetch the JSON data from the URL
-//         const questions = response.data; // extract the JSON data from the response
-//         // console.log(questions)
-//         res.render('home', {questions: questions});
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
-//     }
-// });
+
 
 app.get('/ide/:id', async (req, res) => {
 
@@ -225,17 +215,6 @@ app.post('/run_code', async (req, res) => {
 });
 
 
-// app.post('/submit_code', async (req, res) => {
-//     const data = req.body;
-//     try {
-//         const response = await axios.post(compiler_url+`/submit_code`, data); // fetch the JSON data from the URL
-//         output = "Run Time = " + response.data.run_time  + "\n"+ response.data.result
-//         return res.send(output)
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
-//     }
-// });
 
 app.post('/submit_code', async (req, res) => {
     const data = req.body;
@@ -283,78 +262,3 @@ app.post('/submit_code', async (req, res) => {
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// app.get('/', async (req, res) => {
-//     if (!req.session.userId) {
-//         return res.redirect('/login');
-//     }
-
-//     try {
-//         const response = await axios.get(admin_url+'/problems?format=json'); // fetch the JSON data from the URL
-//         const questions = response.data; // extract the JSON data from the response
-//         // console.log(questions)
-//         res.render('home', { questions: questions });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
-//     }
-// });
-
-
-// app.post('/register', async (req, res) => {
-//     const postData = querystring.stringify(req.body);
-
-//     try {
-//         // Check if the username already exists
-//         const response = await axios.post(admin_url+'/register', postData); // fetch the JSON data from the URL
-//         const data = response.data; // extract the JSON data from the response
-//         console.log(req.body)
-//         console.log(data)
-
-//         res.redirect('/login');
-//     } catch (error) {
-//         console.error(error);
-//         res.redirect('/register');
-//     }
-// });
-
-
-// app.post('/login', async (req, res) => {
-//     const { username, password } = req.body;
-//     const postData = querystring.stringify(req.body);
-//     try {
-//         const response = await axios.post(admin_url+'/login', postData); // fetch the JSON data from the URL
-//         const data = response.data; // extract the JSON data from the response
-//         console.log(req.body)
-//         console.log(data)
-
-//         // if (!isValidPassword) {
-//         //     return res.redirect('/login');
-//         // }
-
-//         // // Set the user ID in the session
-//         // req.session.userId = user.id;
-
-//         // res.redirect('/');
-//     } catch (error) {
-//         // console.error(error);
-//         res.redirect('/login');
-//     }
-// });

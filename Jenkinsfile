@@ -1,5 +1,13 @@
 pipeline {
   agent any
+
+   environment {
+    admin_version = "v0.1"
+    client_version = "v0.1"
+    compiler_version = "v0.1"
+  }
+
+
   stages {
     stage('Git') {
       agent any
@@ -12,9 +20,9 @@ pipeline {
     stage('Docker Build') {
       agent any
       steps {
-        sh 'docker build api/. -t venkysvr/admin'
-        sh 'docker build frontend/. -t venkysvr/client'
-        sh 'docker build subprocess/. -t venkysvr/compiler'
+        sh 'docker build api/. -t venkysvr/admin:${admin_version}'
+        sh 'docker build frontend/. -t venkysvr/client:${client_version}'
+        sh 'docker build subprocess/. -t venkysvr/compiler:${compiler_version}'
       }
     }
      stage('Docker Hub') {
@@ -22,9 +30,9 @@ pipeline {
       steps {
           withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
             sh 'docker login -u ${docker_username} -p ${docker_password}'
-            sh 'docker push venkysvr/admin'
-            sh 'docker push venkysvr/client'
-            sh 'docker push venkysvr/compiler'
+            sh 'docker push venkysvr/admin:${admin_version}'
+            sh 'docker push venkysvr/client:${client_version}'
+            sh 'docker push venkysvr/compiler:${compiler_version}'
         }
       }
     }

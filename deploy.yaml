@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: admin
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: admin
@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: admin
-        image: venkysvr/admin:latest
-        imagePullPolicy: Always
+        image: venkysvr/admin:v0.1
         ports:
         - containerPort: 8000
 ---
@@ -38,7 +37,7 @@ kind: Deployment
 metadata:
   name: client
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: client
@@ -49,8 +48,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: venkysvr/client:latest
-        imagePullPolicy: Always
+        image: venkysvr/client:v0.1
         ports:
         - containerPort: 3000     
 ---
@@ -73,7 +71,7 @@ kind: Deployment
 metadata:
   name: compiler
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: compiler
@@ -84,8 +82,7 @@ spec:
     spec:
       containers:
       - name: compiler
-        image: venkysvr/compiler:latest
-        imagePullPolicy: Always
+        image: venkysvr/compiler:v0.1
         ports:
         - containerPort: 5000
 ---
