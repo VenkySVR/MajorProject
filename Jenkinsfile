@@ -42,7 +42,7 @@ pipeline {
       steps {
         sh 'cd subprocess'
         sh 'pwd'
-        sh 'cd subprocess & python3 test_app.py'
+        sh 'python3 subprocess/test_app.py'
       }
     }
 
