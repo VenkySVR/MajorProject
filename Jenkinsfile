@@ -42,6 +42,7 @@ pipeline {
       steps {
         sh 'cd subprocess'
         sh 'pwd'
+        sh 'pip install Flask'
         sh 'python3 subprocess/test_app.py'
       }
     }
