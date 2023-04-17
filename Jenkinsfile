@@ -41,7 +41,7 @@ pipeline {
       agent any
       steps {
         sh 'cd subprocess'
-        sh 'python3 -m unittest discover -s tests -p "test_*.py"'
+        sh 'python3 test_app.py'
       }
     }
 
@@ -50,6 +50,7 @@ pipeline {
       agent any
       steps {
         sh 'cd ../'
+        sh 'pwd'
         sh "sshpass -p ' ' scp -o StrictHostKeyChecking=no deploy.yaml ubuntu@192.168.55.102:/home/ubuntu"
         sh "sshpass -p ' ' ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102 'microk8s.kubectl apply -f deploy.yaml'"
 
