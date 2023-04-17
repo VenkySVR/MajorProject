@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: admin
-        image: venkysvr/admin:v0.1
+        image: venkysvr/admin:v0.2
         ports:
         - containerPort: 8000
 ---
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: venkysvr/client:v0.1
+        image: venkysvr/client:v0.2
         ports:
         - containerPort: 3000     
 ---
@@ -82,7 +82,7 @@ spec:
     spec:
       containers:
       - name: compiler
-        image: venkysvr/compiler:v0.1
+        image: venkysvr/compiler:v0.2
         ports:
         - containerPort: 5000
 ---
