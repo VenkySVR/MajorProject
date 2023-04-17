@@ -41,7 +41,8 @@ pipeline {
       agent any
       steps {
         sh 'cd subprocess'
-        sh 'python3 test_app.py'
+        sh 'pwd'
+        sh 'cd subprocess & python3 test_app.py'
       }
     }
 
