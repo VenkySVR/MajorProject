@@ -40,7 +40,8 @@ pipeline {
     stage('Unit Test') {
       agent any
       steps {
-        sh script: 'python -m unittest discover -s tests -p "test_*.py"', failFast: true
+        sh 'cd subprocess'
+        sh 'python -m unittest discover -s tests -p "test_*.py"', failFast: true
       }
     }
 
@@ -48,6 +49,7 @@ pipeline {
     stage('Kubernetes') {
       agent any
       steps {
+        sh 'cd ../'
         sh "sshpass -p ' ' scp -o StrictHostKeyChecking=no deploy.yaml ubuntu@192.168.55.102:/home/ubuntu"
         sh "sshpass -p ' ' ssh -o StrictHostKeyChecking=no ubuntu@192.168.55.102 'microk8s.kubectl apply -f deploy.yaml'"
 
