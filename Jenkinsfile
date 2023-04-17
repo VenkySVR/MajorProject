@@ -41,7 +41,7 @@ pipeline {
       agent any
       steps {
         sh 'cd subprocess'
-        sh 'python -m unittest discover -s tests -p "test_*.py"'
+        sh 'python3 -m unittest discover -s tests -p "test_*.py"'
       }
     }
 
