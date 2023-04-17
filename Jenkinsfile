@@ -40,7 +40,7 @@ pipeline {
     stage('Unit Test') {
       agent any
       steps {
-        sh script: 'python -m unittest discover -s tests -p "test_*.py"', abortOnError: true
+        sh script: 'python -m unittest discover -s tests -p "test_*.py"', failFast: true
       }
     }
 
