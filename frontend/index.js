@@ -9,8 +9,8 @@ const querystring = require('querystring');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const compiler_url = "http://192.168.55.107:5000";
-const admin_url = "http://192.168.55.107:8000";
+const compiler_url = "http://compiler-service:5000";
+const admin_url = "http://192.168.55.102:31000";
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -139,17 +139,7 @@ app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 
-// app.get('/', async (req, res) => {
-//     try {
-//         const response = await axios.get(admin_url+'/problems?format=json'); // fetch the JSON data from the URL
-//         const questions = response.data; // extract the JSON data from the response
-//         // console.log(questions)
-//         res.render('home', {questions: questions});
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
-//     }
-// });
+
 
 app.get('/ide/:id', async (req, res) => {
 
@@ -225,91 +215,50 @@ app.post('/run_code', async (req, res) => {
 });
 
 
+
 app.post('/submit_code', async (req, res) => {
     const data = req.body;
+    // console.log(data)
+    const response = await axios.get(admin_url+ `/problems/${data.problem_id}?format=json`); // fetch the JSON data from the URL
+    const problem = response.data;
+    // console.log(problem)
+    const [kk] = await pool.query('SELECT input, output FROM app_testcases WHERE problem_id = ?', [problem.id]);
+    data['test_cases'] = kk
+    // console.log(data)
+    data['time_limit'] = problem.time_limit;
+    // console.log(data)
+    const Jsondata = JSON.stringify(data);
+    // console.log(Jsondata)
     try {
-        const response = await axios.post(compiler_url+`/submit_code`, data); // fetch the JSON data from the URL
-        output = "Run Time = " + response.data.run_time  + "\n"+ response.data.result
-        return res.send(output)
+        const response = await axios.post(compiler_url+`/submit_code`, Jsondata, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }); // fetch the JSON data from the URL
+        output = response.data
+        // console.log(output)
+        if (output === "Accepted") {
+            const [rows] = await pool.query('SELECT * FROM app_customuser WHERE id = ?', [req.session.userId]);
+            const user = rows[0];
+            // console.log(user)
+            const solved = user.solved + 1
+            const score = user.score + problem.score
+            // user table update user data for score and solved count
+            await pool.query(`UPDATE app_customuser SET score = ${score}, solved = ${solved} WHERE id = ${req.session.userId}`);
+
+            // insert into submissions table
+            const [ll] = await pool.query('SELECT * FROM app_submissions');
+            // console.log(ll)
+
+            await pool.query('INSERT INTO app_submissions (result,previous_submission, language, problem_id, user_id) VALUES (?,?,?,?,?)', [output,data['code'],data['language'],data['problem_id'],data['user_id']]);
+
+            return res.send(output)
+        } else {
+            return res.send(output)
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// app.get('/', async (req, res) => {
-//     if (!req.session.userId) {
-//         return res.redirect('/login');
-//     }
-
-//     try {
-//         const response = await axios.get(admin_url+'/problems?format=json'); // fetch the JSON data from the URL
-//         const questions = response.data; // extract the JSON data from the response
-//         // console.log(questions)
-//         res.render('home', { questions: questions });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
-//     }
-// });
-
-
-// app.post('/register', async (req, res) => {
-//     const postData = querystring.stringify(req.body);
-
-//     try {
-//         // Check if the username already exists
-//         const response = await axios.post(admin_url+'/register', postData); // fetch the JSON data from the URL
-//         const data = response.data; // extract the JSON data from the response
-//         console.log(req.body)
-//         console.log(data)
-
-//         res.redirect('/login');
-//     } catch (error) {
-//         console.error(error);
-//         res.redirect('/register');
-//     }
-// });
-
-
-// app.post('/login', async (req, res) => {
-//     const { username, password } = req.body;
-//     const postData = querystring.stringify(req.body);
-//     try {
-//         const response = await axios.post(admin_url+'/login', postData); // fetch the JSON data from the URL
-//         const data = response.data; // extract the JSON data from the response
-//         console.log(req.body)
-//         console.log(data)
-
-//         // if (!isValidPassword) {
-//         //     return res.redirect('/login');
-//         // }
-
-//         // // Set the user ID in the session
-//         // req.session.userId = user.id;
-
-//         // res.redirect('/');
-//     } catch (error) {
-//         // console.error(error);
-//         res.redirect('/login');
-//     }
-// });
