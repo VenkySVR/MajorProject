@@ -129,4 +129,11 @@ class Code(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
-
+class Stats(models.Model):
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    no_of_solutions = models.IntegerField(null=False, default=0)
+    no_of_success = models.IntegerField(null=False, default=0)
+    no_of_failure = models.IntegerField(null=False, default= 0)
+    no_of_inprogress = models.IntegerField(null=False, default= 0)
+    def __str__(self):
+        return self.problem.title +"---" +self.no_of_solutions + "---"+self.no_of_inprogress

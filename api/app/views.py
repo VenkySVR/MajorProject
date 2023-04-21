@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 # from yaml import serialize
-from .serializers import ProblemSerializer, TestCasesSerializer, SubmissionsSerializer, UserSerializer, CodeSerializer
-from .models import Problem, TestCases, Submissions, CustomUser
+from .serializers import ProblemSerializer, TestCasesSerializer, SubmissionsSerializer, UserSerializer, CodeSerializer, StatsSerializer
+from .models import Problem, TestCases, Submissions, CustomUser, Stats
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -61,6 +61,16 @@ def ListOfSubmissionsOfUser(request,id):
         return HttpResponse(status=404)
     if request.method == 'GET':
         serializer = SubmissionsSerializer(Submissions.objects.filter(user=user), many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def Stats_problem(request, id):
+    try :
+        problem = Stats.objects.get(id=id)
+    except Stats.DoesNotExist:
+        return HttpResponse(status=404)
+    if request.method == 'GET':
+        serializer = StatsSerializer(Submissions.objects.filter(problem=problem), many=True)
         return Response(serializer.data)
 
 # @csrf_exempt

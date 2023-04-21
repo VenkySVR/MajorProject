@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer,Serializer
-from .models import CustomUser, Problem, TestCases, Submissions,Code
+from .models import CustomUser, Problem, TestCases, Submissions,Code, Stats
 
 
 class ProblemSerializer(ModelSerializer):
@@ -33,4 +33,19 @@ class CodeSerializer(ModelSerializer,Serializer):
         fields = ('language', 'code', 'problem_id', 'user_id','input')
  
  
+class StatsSerializer(ModelSerializer):
+    class Meta:
+        model = Stats
+        fields = ('problem_id','no_of_solutions','no_of_success','no_of_failure','no_of_inprogress')
 
+
+# class StatsSerializer(ModelSerializer):
+#     class Meta:
+#         model = Stats
+#         fields = ('problem_id','no_of_solutions','no_of_success','no_of_failure','no_of_inprogress')
+
+
+# class StatsSerializer(ModelSerializer):
+#     class Meta:
+#         model = Stats
+#         fields = ('problem_id','no_of_solutions','no_of_success','no_of_failure','no_of_inprogress')

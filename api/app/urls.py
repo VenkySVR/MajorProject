@@ -7,5 +7,7 @@ urlpatterns = [
     path('leadership', views.Leadership, name='Leadership'),
     path('submissions/problem/<int:id>', views.ListOfSubmissionsOfProblem, name='ListOfSubmissionsOfProblem'),
     path('submissions/user/<int:id>', views.ListOfSubmissionsOfUser, name='ListOfSubmissionsOfUser'),
+    path('stats/<int:id>', views.Stats_problem, name='Stats_problem'),
+    # path('code-post', views.Code_post, name='Code_post')
 
 ]
