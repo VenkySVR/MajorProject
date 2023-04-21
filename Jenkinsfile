@@ -2,9 +2,9 @@ pipeline {
   agent any
 
    environment {
-    admin_version = "v0.2"
-    client_version = "v0.2"
-    compiler_version = "v0.2"
+    admin_version = "v0.3"
+    client_version = "v0.3"
+    compiler_version = "v0.3"
   }
 
 
