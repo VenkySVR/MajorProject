@@ -71,7 +71,7 @@ kind: Deployment
 metadata:
   name: compiler
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: compiler

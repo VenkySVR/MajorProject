@@ -151,7 +151,13 @@ app.get('/ide/:id', async (req, res) => {
         const response = await axios.get(admin_url+`/problems/${req.params.id}?format=json`); // fetch the JSON data from the URL
         const questions = response.data; // extract the JSON data from the response
         // console.log(questions)
-        res.render('ide', { username: req.session.username, userId: req.session.userId, questions: questions });
+        let previous_submission ='';
+        const [submissions] = await pool.query(`SELECT * FROM app_submissions WHERE result = 'Accepted'AND problem_id = ${req.params.id} AND user_id = ${req.session.userId} ORDER BY id DESC LIMIT 1`);
+        if (submissions.length != 0) {
+            previous_submission = submissions[0].previous_submission;
+        }
+
+        res.render('ide', { previous_submission: previous_submission, username: req.session.username, userId: req.session.userId, questions: questions });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching JSON data'); // handle any errors that occur
@@ -249,11 +255,14 @@ app.post('/submit_code', async (req, res) => {
             // insert into submissions table
             const [ll] = await pool.query('SELECT * FROM app_submissions');
             // console.log(ll)
-
-            await pool.query('INSERT INTO app_submissions (result,previous_submission, language, problem_id, user_id) VALUES (?,?,?,?,?)', [output,data['code'],data['language'],data['problem_id'],data['user_id']]);
+            
+            await pool.query('INSERT INTO app_submissions (result,previous_submission, language, problem_id, user_id,date_created) VALUES (?,?,?,?,?,?)', [output,data['code'],data['language'],data['problem_id'],data['user_id'],new Date()]);
 
             return res.send(output)
         } else {
+             //on solution fail
+             await pool.query('INSERT INTO app_submissions (result,previous_submission, language, problem_id, user_id,date_created) VALUES (?,?,?,?,?,?)', ["Failed",data['code'],data['language'],data['problem_id'],data['user_id'],new Date()]);
+             //
             return res.send(output)
         }
     } catch (error) {

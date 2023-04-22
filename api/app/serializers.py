@@ -16,7 +16,7 @@ class TestCasesSerializer(ModelSerializer):
 class SubmissionsSerializer(ModelSerializer):
     class Meta:
         model = Submissions
-        fields = ('id','problem','user','date_created','result','previous_submission')
+        fields = ('id','problem','user','date_created','result','previous_submission','language')
 
 class UserSerializer(ModelSerializer):
     class Meta:

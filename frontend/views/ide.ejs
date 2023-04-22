@@ -41,6 +41,7 @@
     <input type="hidden"  name="problemId" id="problemId" value="<%= questions.id %>">
     <input type="hidden"  name="userId" id="userId" value="<%= userId %>">
     <input type="hidden" name="username" id="username" value="<%= username %>">
+    <input type="hidden" name="prev" id="prev" value="<%= previous_submission %>">
 
 
 
@@ -117,7 +118,8 @@
         editor = ace.edit("editor");
         editor.setTheme("ace/theme/twilight");
         editor.session.setMode("ace/mode/python");
-        editor.insert("print('hello world')");
+        const prev = document.getElementById("prev").value;
+        editor.insert(prev);
     }
 
     console.log("Hello World!");
